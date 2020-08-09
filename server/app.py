@@ -1,6 +1,7 @@
 import requests
 import json
-
+from flask_graphql import GraphQLView
+from flask import Flask
 import graphene
 
 
@@ -24,3 +25,13 @@ result = schema.execute('''
 ''')
 
 print(result.data)
+
+app = Flask(__name__)
+
+app.add_url_rule("/graphql",
+                 view_func=GraphQLView.as_view('graphql',
+                                               schema=schema,
+                                               graphiql=True))
+
+if __name__ == "__main__":
+    app.run(debug=True)
